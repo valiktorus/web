@@ -1,0 +1,79 @@
+html{
+    background-color: #ccdbe6;
+}
+#wrapper{
+    width: 1100px;
+    height: 550px;
+    margin: 10px auto;
+    border-radius: 10px;
+    position:relative;
+    background-color: #5c9eff;
+}
+
+#header{
+    height: 20px;
+    width:auto;
+}
+
+#bodyContainer{
+    width: 1080px;
+    height: 435px;
+    padding: 5px;
+    position: absolute;
+    bottom: 55px;
+    margin: 5px;
+    border-radius: 10px;
+    background-color: #fefff3;
+}
+
+#footer{
+    width: 1090px;
+    height: 50px;
+    position: absolute;
+    bottom: 0;
+    margin: 5px;
+    border-radius: 10px;
+    background-color: #fefff3;
+}
+
+.menuElement{
+    width: auto;
+    height: auto;
+    margin: 5px;
+    padding: 5px;
+    float: right;
+    background-color: #fefff3;
+    border: 1px solid #5c9eff;
+    border-radius: 10px;
+}
+
+#toMain{
+    float: left;
+}
+#currentUser{
+    width: auto;
+    height: auto;
+    margin: 5px;
+    padding: 5px;
+    float: left;
+    background-color: #fefff3;
+    border-radius: 10px;
+}
+
+#footerText{
+    margin: 10px;
+}
+input{
+    margin: 5px;
+    border-radius: 3px;
+}
+input:focus {
+    color: #000000;
+    border: 1px solid #000000
+}
+.errorMessage{
+    color: red;
+}
+.formInput{
+    margin-left: 20px;
+}

@@ -1,0 +1,62 @@
+#bodyContainer{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+#tasksContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: inherit;
+}
+
+.todo{
+    width: 500px;
+    height: 340px;
+    margin-top: 10px;
+    border: 1px solid #5c9eff;
+    border-radius: 5px;
+    position: relative;
+    display: none;
+    overflow: auto;
+}
+
+
+.todoHeader{
+    width: inherit;
+    height: 20px;
+    border-bottom: inherit;
+    border-radius: inherit;
+    text-align: center;
+}
+#bodyMenuButtons{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: inherit;
+}
+.crudTask{
+    width: 500px;
+    border: 1px solid #5c9eff;
+    border-radius: 5px;
+    height: 20px;
+    display: flex;
+    justify-content: space-around;
+    align-items: stretch;
+    text-align:center;
+}
+.crudTaskButton{
+    width: 100px;
+    border-left: 1px solid #5c9eff;
+    border-right: 1px solid #5c9eff;
+    border-radius:inherit;
+    display: none;
+}
+.todo table th{
+    text-align: left;
+}
+.visible{
+    display: inline;
+}
