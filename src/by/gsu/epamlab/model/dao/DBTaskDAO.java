@@ -7,6 +7,7 @@ import by.gsu.epamlab.model.connector.DBConnector;
 import by.gsu.epamlab.model.constants.QueryConstants;
 import by.gsu.epamlab.model.enums.TaskEnum;
 
+import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,6 +19,7 @@ public class DBTaskDAO implements ITaskDAO{
     private static final int STATUS_INDEX = 2;
     private static final int TASK_DESCRIPTION_INDEX = 1;
     private static final int DATE_INDEX = 2;
+
 
     @Override
     public Map<TaskEnum, List<Task>> getTaskLists(String login) throws DaoException {
@@ -97,9 +99,9 @@ public class DBTaskDAO implements ITaskDAO{
         } catch (SQLException e) {
             throw new DaoException(QueryConstants.ERROR_IN_QUERY_DURING_CREATING_TASK, e);
         }finally {
-                dbConnector.closeConnection(resultSet);
-                dbConnector.closeConnection(psInsertTask, psInsertUserTask, psSelectTask);
-                dbConnector.closeConnection(connection);
+            dbConnector.closeConnection(resultSet);
+            dbConnector.closeConnection(psInsertTask, psInsertUserTask, psSelectTask);
+            dbConnector.closeConnection(connection);
         }
     }
 
@@ -126,6 +128,50 @@ public class DBTaskDAO implements ITaskDAO{
             dbConnector.closeConnection(connection, preparedStatement);
         }
     }
+
+    @Override
+    public void uploadFile(String login, Task task, String realPath, String fileName, InputStream inputStream) throws DaoException {
+        final int FILE_PATH_INDEX = 1;
+        final int LOGIN_INDEX = 2;
+        final int TASK_DESCRIPTION_INDEX = 3;
+        final int DATE_INDEX = 4;
+
+        String dir = realPath + "WEB-INF\\resources\\" + login ;
+        String uniqueFileName = generateUniqueFileName(fileName, task);
+        String filePath = dir + "\\" + uniqueFileName;
+        File userDirectory = new File(dir);
+        userDirectory.mkdir();
+        try(BufferedInputStream bis = new BufferedInputStream(inputStream);
+            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(new File(filePath)))) {
+            int data;
+            while ((data = bis.read()) !=-1){
+                bos.write(data);
+            }
+        } catch (IOException e) {
+            throw new DaoException(QueryConstants.ERROR_DURING_UPLOADING_FILE, e);
+        }
+        DBConnector dbConnector = new DBConnector();
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection = dbConnector.getConnection();
+            preparedStatement = connection.prepareStatement(QueryConstants.UPLOAD_FILE);
+            preparedStatement.setString(FILE_PATH_INDEX, fileName);
+            preparedStatement.setString(LOGIN_INDEX, login);
+            preparedStatement.setString(TASK_DESCRIPTION_INDEX, task.getDescription());
+            preparedStatement.setDate(DATE_INDEX, task.getDate());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException(QueryConstants.ERROR_DURING_UPLOADING_FILE, e);
+        }finally {
+            dbConnector.closeConnection(connection, preparedStatement);
+        }
+    }
+
+    private String generateUniqueFileName(String fileName, Task task){
+        return task.getDescription().replaceAll(" ", "_") + task.getDate() + fileName;
+    }
+
 
     private static List<Task> getTaskList(DBConnector dbConnector, String login, TaskEnum taskEnum) throws SQLException, DaoException {
         PreparedStatement preparedStatement = null;

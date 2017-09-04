@@ -34,6 +34,12 @@ public class QueryConstants {
             "AND usertasks.date = ?  " +
             "AND idTaskStatus = 3;";
 
+    public static final String UPLOAD_FILE = "update usertasks " +
+            "inner join users on users.id = idUser " +
+            "inner join tasks on tasks.id = idTask " +
+            "set usertasks.fileName = ? " +
+            "where users.login = ? and tasks.task = ? and usertasks.date = ?;";
+
     public static final String WRONG_LOGIN_OR_PASSWORD = "Wrong login or password";
     public static final String ERROR_IN_QUERY_DURING_LOGIN = "Error in query during login";
     public static final String ERROR_IN_QUERY_DURING_REGISTRATION = "Error in query during registration";
@@ -41,6 +47,7 @@ public class QueryConstants {
     public static final String ERROR_IN_QUERY_DURING_UPDATING_TASKS = "Error in query during updating tasks";
     public static final String ERROR_IN_QUERY_DURING_DELETING_TASKS = "Error in query during deleting tasks";
     public static final String ERROR_IN_QUERY_DURING_CREATING_TASK = "Error in query during creating tasks";
+    public static final String ERROR_DURING_UPLOADING_FILE = "Error during uploading file";
     public static final String ERROR_CONNECTING_TO_DB = "Error connecting to db";
 
 

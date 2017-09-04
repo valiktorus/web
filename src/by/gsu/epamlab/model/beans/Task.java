@@ -3,8 +3,13 @@ package by.gsu.epamlab.model.beans;
 import java.sql.Date;
 
 public class Task {
-    private final String description;
-    private final String date;
+    private String description;
+    private  String date;
+
+    public Task() {
+        this.description = "";
+        this.date = "";
+    }
 
     public Task(String description, Date date) {
         this.description = description;
@@ -15,6 +20,14 @@ public class Task {
         this.description = description;
         this.date = date;
 
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getDescription() {

@@ -2,4 +2,3 @@
 <div id="footer">
     <p id="footerText">Developed by Valentin Pshenichnik </p>
 </div>
-<script>var contextPath = "${pageContext.request.contextPath}"</script>

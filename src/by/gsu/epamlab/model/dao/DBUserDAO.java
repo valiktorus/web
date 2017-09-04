@@ -14,8 +14,8 @@ import java.sql.SQLException;
 
 public class DBUserDAO implements IUserDAO {
 
-    public static final int LOGIN_INDEX = 1;
-    public static final int PASSWORD_INDEX = 2;
+    private static final int LOGIN_INDEX = 1;
+    private static final int PASSWORD_INDEX = 2;
 
     @Override
     public User getUser(String login, String password) throws DaoException {

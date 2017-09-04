@@ -1,4 +1,5 @@
 <%@ page import="by.gsu.epamlab.controllers.ControllerConstants" %>
+<%@ page import="by.gsu.epamlab.model.beans.Task" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <html lang="en">
@@ -23,8 +24,16 @@
                 <table>
                     <c:forEach items="${todayList}" var="task">
                         <tr>
-                            <td><input type="checkbox" name="taskDescription" data-description="${task.description}" data-date="${task.date}" ></td>
+                            <td><input type="checkbox" name="taskDescription" data-description="${task.description}" data-date="${task.date}" data-fileName="${task.fileName}" ></td>
                             <td>${task.description}</td>
+                            <td>
+                                <form enctype="multipart/form-data" action="${pageContext.request.contextPath}<%=ControllerConstants.UPLOAD_FILE_CONTROLLER%>" method="post">
+                                    <input type="hidden" name="taskDescription" value="${task.description}">
+                                    <input type="hidden" name="taskDate" value="${task.date}">
+                                    <input type="file" name="fileUpload">
+                                    <input type="submit" value="upload"/>
+                                </form>
+                            </td>
                         </tr>
                     </c:forEach>
                 </table>

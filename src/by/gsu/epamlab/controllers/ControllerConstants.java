@@ -19,6 +19,7 @@ public class ControllerConstants {
     public static final String CHANGE_TASK_CONTROLLER = "/operation/changeTaskController";
     public static final String CREATE_TASK_CONTROLLER = "/operation/createTaskController";
     public static final String DELETE_TASK_CONTROLLER = "/operation/deleteTaskController";
+    public static final String UPLOAD_FILE_CONTROLLER = "/operation/uploadFileController";
     public static final String LOGIN_CONTROLLER = "/userControllers/login";
     public static final String LOGOUT_CONTROLLER = "/userControllers/logout";
     public static final String REGISTRATION_CONTROLLER = "/userControllers/registration";
