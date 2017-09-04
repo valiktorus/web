@@ -31,7 +31,8 @@ function populateData(operation) {
         var $el = $(el);
         result.push({
             description: $el.data('description'),
-            date: $el.data('date')
+            date: $el.data('date'),
+            fileName: $el.data('fileName')
         });
     });
     return JSON.stringify(result);
@@ -53,16 +54,16 @@ function onClickButton(event, url, operation) {
 }
 
 function setOnClickButtons() {
-    $('#deleteTaskButton').on('click', function (event) {
+    $('#deleteTaskButton').click(function (event) {
         onClickButton(event, contextPath + '/operation/changeTaskController', 'deleted');
     });
-    $('#fixTaskButton').on('click', function (event) {
+    $('#fixTaskButton').click(function (event) {
         onClickButton(event,contextPath + '/operation/changeTaskController', 'fixed')
     });
-    $('#restoreTaskButton').on('click', function (event) {
+    $('#restoreTaskButton').click(function (event) {
         onClickButton(event, contextPath + '/operation/changeTaskController', 'actual')
     });
-    $('#createTaskButton').on('click', function (event) {
+    $('#createTaskButton').click(function (event) {
         event.preventDefault();
         var day = $('.todo.visible .todoHeader p').text();
         $.post(contextPath + "/pages/taskPages/createTask.jsp", function (data) {
@@ -76,12 +77,13 @@ function setOnClickButtons() {
             }
         })
     });
-    $('#clearSelectedTaskButton').on('click', function (event) {
+    $('#clearSelectedTaskButton').click(function (event) {
         onClickButton(event,contextPath + "/operation/deleteTaskController")
     });
-    $('#clearAllTaskButton').on('click', function (event) {
+    $('#clearAllTaskButton').click(function (event) {
         onClickButton(event,contextPath +  "/operation/deleteTaskController", 'clearAll')
     });
+
 }
 
 function getInputDate(day) {

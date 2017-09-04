@@ -5,21 +5,44 @@ import java.sql.Date;
 public class Task {
     private String description;
     private  String date;
+    private String fileName;
 
     public Task() {
-        this.description = "";
-        this.date = "";
+        this.description = null;
+        this.date = null;
+        fileName = null;
+    }
+
+    public Task(String description, String date, String fileName) {
+        this.description = description;
+        this.date = date;
+        this.fileName = fileName;
+    }
+
+    public Task(String description, Date date, String fileName) {
+        this.description = description;
+        this.date = date.toString();
+        this.fileName = fileName;
     }
 
     public Task(String description, Date date) {
         this.description = description;
         this.date = date.toString();
+        this.fileName = null;
     }
 
     public Task(String description, String date) {
         this.description = description;
         this.date = date;
+        this.fileName = null;
+    }
 
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
     public void setDescription(String description) {

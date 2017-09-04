@@ -14,5 +14,7 @@ public interface ITaskDAO {
     void updateTasks(String login, Task[] tasks, String action) throws DaoException;
     void createTask(String login, Task task) throws DaoException;
     void deleteTask(String login, Task[] tasks) throws DaoException;
-    void uploadFile(String login, Task task, String realPath, String fileName, InputStream inputStream) throws IOException, DaoException;
+    void uploadFile(String login, Task task, String realPath, String fileName, InputStream inputStream)throws DaoException;
+    InputStream getFileInputStream(String login, Task task, String realPath) throws DaoException;
+    void deleteFile(String login, Task task, String realPath) throws DaoException;
 }

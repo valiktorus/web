@@ -8,6 +8,7 @@ import by.gsu.epamlab.model.constants.QueryConstants;
 import by.gsu.epamlab.model.enums.TaskEnum;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,11 +16,9 @@ import java.util.List;
 import java.util.Map;
 
 public class DBTaskDAO implements ITaskDAO{
-    private static final int LOGIN_INDEX = 1;
-    private static final int STATUS_INDEX = 2;
-    private static final int TASK_DESCRIPTION_INDEX = 1;
-    private static final int DATE_INDEX = 2;
 
+    public static final String RESOURCES_PATH = "WEB-INF\\resources\\";
+    public static final String SEPARATOR = "\\";
 
     @Override
     public Map<TaskEnum, List<Task>> getTaskLists(String login) throws DaoException {
@@ -136,9 +135,9 @@ public class DBTaskDAO implements ITaskDAO{
         final int TASK_DESCRIPTION_INDEX = 3;
         final int DATE_INDEX = 4;
 
-        String dir = realPath + "WEB-INF\\resources\\" + login ;
+        String dir = realPath + RESOURCES_PATH + login ;
         String uniqueFileName = generateUniqueFileName(fileName, task);
-        String filePath = dir + "\\" + uniqueFileName;
+        String filePath = dir + SEPARATOR + uniqueFileName;
         File userDirectory = new File(dir);
         userDirectory.mkdir();
         try(BufferedInputStream bis = new BufferedInputStream(inputStream);
@@ -168,12 +167,55 @@ public class DBTaskDAO implements ITaskDAO{
         }
     }
 
+    @Override
+    public InputStream getFileInputStream(String login, Task task, String realPath) throws DaoException {
+        String uniqueFileName = generateUniqueFileName(task.getFileName(), task);
+        String filePath = realPath + RESOURCES_PATH + login + SEPARATOR + uniqueFileName;
+        try {
+            return new FileInputStream(new File(filePath));
+        } catch (FileNotFoundException e) {
+            throw new DaoException("file not found", e);
+        }
+    }
+
+    @Override
+    public void deleteFile(String login, Task task, String realPath) throws DaoException {
+        DBConnector dbConnector = new DBConnector();
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection = dbConnector.getConnection();
+            preparedStatement = connection.prepareStatement(QueryConstants.DELETE_FILE);
+            preparedStatement.setString(1, login);
+            preparedStatement.setString(2, task.getDescription());
+            preparedStatement.setDate(3, task.getDate());
+            preparedStatement.setString(4, task.getFileName());
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DaoException("Error during deleting file name", e);
+        }finally {
+            dbConnector.closeConnection(connection, preparedStatement);
+        }
+        String uniqueFileName = generateUniqueFileName(task.getFileName(), task);
+        String filePath = realPath + RESOURCES_PATH + login + SEPARATOR + uniqueFileName;
+        File fileToDelete = new File(filePath);
+        if (!fileToDelete.delete()){
+            throw new DaoException("Error during deleting file");
+        }
+    }
+
     private String generateUniqueFileName(String fileName, Task task){
         return task.getDescription().replaceAll(" ", "_") + task.getDate() + fileName;
     }
 
-
     private static List<Task> getTaskList(DBConnector dbConnector, String login, TaskEnum taskEnum) throws SQLException, DaoException {
+        final int LOGIN_INDEX = 1;
+        final int STATUS_INDEX = 2;
+        final int TASK_DESCRIPTION_INDEX = 1;
+        final int DATE_INDEX = 2;
+        final int FILE_NAME_INDEX = 3;
+
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         List<Task> tasks = new ArrayList<>();
@@ -186,7 +228,8 @@ public class DBTaskDAO implements ITaskDAO{
             while (resultSet.next()){
                 String taskDescription = resultSet.getString(TASK_DESCRIPTION_INDEX);
                 Date date = resultSet.getDate(DATE_INDEX);
-                tasks.add(new Task(taskDescription, date));
+                String fileName = resultSet.getString(FILE_NAME_INDEX);
+                tasks.add(new Task(taskDescription, date, fileName));
             }
         }finally {
             if (dbConnector != null) {

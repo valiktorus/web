@@ -24,15 +24,28 @@
                 <table>
                     <c:forEach items="${todayList}" var="task">
                         <tr>
-                            <td><input type="checkbox" name="taskDescription" data-description="${task.description}" data-date="${task.date}" data-fileName="${task.fileName}" ></td>
+                            <td><input type="checkbox" name="taskDescription" data-description="${task.description}" data-date="${task.date}" data-fileName="${task.fileName}"></td>
                             <td>${task.description}</td>
                             <td>
-                                <form enctype="multipart/form-data" action="${pageContext.request.contextPath}<%=ControllerConstants.UPLOAD_FILE_CONTROLLER%>" method="post">
-                                    <input type="hidden" name="taskDescription" value="${task.description}">
-                                    <input type="hidden" name="taskDate" value="${task.date}">
-                                    <input type="file" name="fileUpload">
-                                    <input type="submit" value="upload"/>
-                                </form>
+                                <c:choose>
+                                    <c:when test="${not empty task.fileName}">
+                                        <form method="post" action="${pageContext.request.contextPath}<%=ControllerConstants.DOWNLOAD_FILE_CONTROLLER%>">
+                                            <input type="hidden" name="taskDescription" value="${task.description}">
+                                            <input type="hidden" name="taskDate" value="${task.date}">
+                                            <input type="hidden" name="fileName" value="${task.fileName}">
+                                            <input formaction="${pageContext.request.contextPath}<%=ControllerConstants.DOWNLOAD_FILE_CONTROLLER%>" type="submit" value="download">
+                                            <input formaction="${pageContext.request.contextPath}<%=ControllerConstants.DELETE_FILE_CONTROLLER%>" type="submit" value="delete file">
+                                        </form>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <form enctype="multipart/form-data" action="${pageContext.request.contextPath}<%=ControllerConstants.UPLOAD_FILE_CONTROLLER%>" method="post">
+                                            <input type="hidden" name="taskDescription" value="${task.description}">
+                                            <input type="hidden" name="taskDate" value="${task.date}">
+                                            <input type="file" name="fileUpload">
+                                            <input type="submit" value="upload">
+                                        </form>
+                                    </c:otherwise>
+                                </c:choose>
                             </td>
                         </tr>
                     </c:forEach>
@@ -45,7 +58,7 @@
                 <table>
                     <c:forEach items="${tomorrowList}" var="task">
                         <tr>
-                            <td><input type="checkbox" name="taskDescription" data-description="${task.description}" data-date="${task.date}" ></td>
+                            <td><input type="checkbox" name="taskDescription" data-description="${task.description}" data-date="${task.date}" data-fileName="${task.fileName}"></td>
                             <td>${task.description}</td>
                         </tr>
                     </c:forEach>
@@ -59,7 +72,7 @@
                     <table>
                         <c:forEach items="${otherDayList}" var="task">
                             <tr>
-                                <td><input type="checkbox" name="taskDescription" data-description="${task.description}" data-date="${task.date}" ></td>
+                                <td><input type="checkbox" name="taskDescription" data-description="${task.description}" data-date="${task.date}" data-fileName="${task.fileName}"></td>
                                 <td>${task.description}</td>
                                 <td>${task.date}</td>
                             </tr>
@@ -74,7 +87,7 @@
                 <table>
                     <c:forEach items="${fixedList}" var="task">
                         <tr>
-                            <td><input type="checkbox" name="taskDescription" data-description="${task.description}" data-date="${task.date}" ></td>
+                            <td><input type="checkbox" name="taskDescription" data-description="${task.description}" data-date="${task.date}" data-fileName="${task.fileName}"></td>
                             <td>${task.description}</td>
                             <td>${task.date}</td>
                         </tr>
@@ -88,7 +101,7 @@
                 <table>
                     <c:forEach items="${deletedList}" var="task">
                         <tr>
-                            <td><input type="checkbox" name="taskDescription" data-description="${task.description}" data-date="${task.date}" ></td>
+                            <td><input type="checkbox" name="taskDescription" data-description="${task.description}" data-date="${task.date}" data-fileName="${task.fileName}"></td>
                             <td>${task.description}</td>
                             <td>${task.date}</td>
                         </tr>

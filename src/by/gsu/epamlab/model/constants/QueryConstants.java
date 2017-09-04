@@ -7,7 +7,7 @@ public class QueryConstants {
 
     public static final String USER_REGISTRATION_QUERY = "insert into web.users (login, password) values (?, ?);";
 
-    public static final String GET_TASK_QUERY_START = "SELECT tasks.task, date from usertasks" +
+    public static final String GET_TASK_QUERY_START = "SELECT tasks.task, date, fileName from usertasks" +
             " inner join tasks on tasks.id = idTask" +
             " inner join users on users.id = idUser" +
             " inner join taskstatuses on taskstatuses.id = idTaskStatus " +
@@ -39,6 +39,15 @@ public class QueryConstants {
             "inner join tasks on tasks.id = idTask " +
             "set usertasks.fileName = ? " +
             "where users.login = ? and tasks.task = ? and usertasks.date = ?;";
+
+    public static final String DELETE_FILE = "UPDATE usertasks " +
+            "INNER JOIN tasks ON tasks.id = idTask " +
+            "INNER JOIN users ON users.id = idUser " +
+            "SET fileName = NULL " +
+            "WHERE users.login = ? " +
+            "AND tasks.task = ? " +
+            "AND date = ? " +
+            "AND fileName = ?;";
 
     public static final String WRONG_LOGIN_OR_PASSWORD = "Wrong login or password";
     public static final String ERROR_IN_QUERY_DURING_LOGIN = "Error in query during login";
