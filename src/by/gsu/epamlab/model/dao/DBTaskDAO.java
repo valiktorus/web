@@ -5,10 +5,10 @@ import by.gsu.epamlab.interfaces.ITaskDAO;
 import by.gsu.epamlab.model.beans.Task;
 import by.gsu.epamlab.model.connector.DBConnector;
 import by.gsu.epamlab.model.constants.QueryConstants;
+import by.gsu.epamlab.model.enums.ActionEnum;
 import by.gsu.epamlab.model.enums.TaskEnum;
 
 import java.io.*;
-import java.nio.file.Files;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,8 +17,13 @@ import java.util.Map;
 
 public class DBTaskDAO implements ITaskDAO{
 
-    public static final String RESOURCES_PATH = "WEB-INF\\resources\\";
-    public static final String SEPARATOR = "\\";
+    private static final String RESOURCES_PATH = "WEB-INF\\resources\\";
+    private static final String SEPARATOR = "\\";
+    public static final String FILE_NOT_FOUND = "file not found";
+    public static final String ERROR_DURING_DELETING_FILE_NAME = "Error during deleting file name";
+    public static final String ERROR_DURING_DELETING_FILE = "Error during deleting file";
+    public static final String WHITESPACE = " ";
+    public static final String UNDERSCORE = "_";
 
     @Override
     public Map<TaskEnum, List<Task>> getTaskLists(String login) throws DaoException {
@@ -40,7 +45,7 @@ public class DBTaskDAO implements ITaskDAO{
     }
 
     @Override
-    public void updateTasks(String login, Task[] tasks, String action) throws DaoException {
+    public void updateTasks(String login, Task[] tasks, ActionEnum action) throws DaoException {
         final int ACTION_INDEX = 1;
         final int LOGIN_INDEX = 2;
         final int TASK_INDEX = 3;
@@ -53,7 +58,7 @@ public class DBTaskDAO implements ITaskDAO{
             connection = dbConnector.getConnection();
             preparedStatement = connection.prepareStatement(QueryConstants.UPDATE_TASK);
             for (Task task: tasks) {
-                preparedStatement.setString(ACTION_INDEX, action);
+                preparedStatement.setString(ACTION_INDEX, action.toString());
                 preparedStatement.setString(LOGIN_INDEX, login);
                 preparedStatement.setString(TASK_INDEX, task.getDescription());
                 preparedStatement.setDate(DATE_INDEX, task.getDate());
@@ -70,6 +75,11 @@ public class DBTaskDAO implements ITaskDAO{
 
     @Override
     public void createTask(String login, Task task) throws DaoException {
+        final int INSERT_LOGIN_INDEX = 1;
+        final int SELECT_TASK_ID_INDEX = 1;
+        final int INSERT_TASK_ID_INDEX = 2;
+        final int TASK_DESCRIPTION_INDEX = 1;
+        final int INSERT_DATE_INDEX = 4;
         DBConnector dbConnector = new DBConnector();
         Connection connection = null;
         PreparedStatement psSelectTask = null;
@@ -81,18 +91,18 @@ public class DBTaskDAO implements ITaskDAO{
             psSelectTask = connection.prepareStatement(QueryConstants.GET_TASK_ID_BY_DESCRIPTION);
             psInsertTask = connection.prepareStatement(QueryConstants.CREATE_TASK_DESCRIPTION);
             psInsertUserTask = connection.prepareStatement(QueryConstants.CREATE_USER_TASK);
-            psSelectTask.setString(1, task.getDescription());
+            psSelectTask.setString(TASK_DESCRIPTION_INDEX, task.getDescription());
             resultSet = psSelectTask.executeQuery();
             if (!resultSet.next()){
-                psInsertTask.setString(1, task.getDescription());
+                psInsertTask.setString(TASK_DESCRIPTION_INDEX, task.getDescription());
                 psInsertTask.executeUpdate();
                 resultSet = psSelectTask.executeQuery();
                 resultSet.next();
             }
-            int taskId = resultSet.getInt(1);
-            psInsertUserTask.setString(1, login);
-            psInsertUserTask.setInt(2, taskId);
-            psInsertUserTask.setDate(3, task.getDate());
+            int taskId = resultSet.getInt(SELECT_TASK_ID_INDEX);
+            psInsertUserTask.setString(INSERT_LOGIN_INDEX, login);
+            psInsertUserTask.setInt(INSERT_TASK_ID_INDEX, taskId);
+            psInsertUserTask.setDate(INSERT_DATE_INDEX, task.getDate());
             psInsertUserTask.executeUpdate();
 
         } catch (SQLException e) {
@@ -174,26 +184,31 @@ public class DBTaskDAO implements ITaskDAO{
         try {
             return new FileInputStream(new File(filePath));
         } catch (FileNotFoundException e) {
-            throw new DaoException("file not found", e);
+            throw new DaoException(FILE_NOT_FOUND, e);
         }
     }
 
     @Override
     public void deleteFile(String login, Task task, String realPath) throws DaoException {
+        final int LOGIN_INDEX = 1;
+        final int TASK_DESCRIPTION_INDEX = 2;
+        final int DATE_INDEX = 3;
+        final int FILE_NAME_INDEX = 4;
+
         DBConnector dbConnector = new DBConnector();
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try {
             connection = dbConnector.getConnection();
             preparedStatement = connection.prepareStatement(QueryConstants.DELETE_FILE);
-            preparedStatement.setString(1, login);
-            preparedStatement.setString(2, task.getDescription());
-            preparedStatement.setDate(3, task.getDate());
-            preparedStatement.setString(4, task.getFileName());
+            preparedStatement.setString(LOGIN_INDEX, login);
+            preparedStatement.setString(TASK_DESCRIPTION_INDEX, task.getDescription());
+            preparedStatement.setDate(DATE_INDEX, task.getDate());
+            preparedStatement.setString(FILE_NAME_INDEX, task.getFileName());
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
-            throw new DaoException("Error during deleting file name", e);
+            throw new DaoException(ERROR_DURING_DELETING_FILE_NAME, e);
         }finally {
             dbConnector.closeConnection(connection, preparedStatement);
         }
@@ -201,12 +216,12 @@ public class DBTaskDAO implements ITaskDAO{
         String filePath = realPath + RESOURCES_PATH + login + SEPARATOR + uniqueFileName;
         File fileToDelete = new File(filePath);
         if (!fileToDelete.delete()){
-            throw new DaoException("Error during deleting file");
+            throw new DaoException(ERROR_DURING_DELETING_FILE);
         }
     }
 
     private String generateUniqueFileName(String fileName, Task task){
-        return task.getDescription().replaceAll(" ", "_") + task.getDate() + fileName;
+        return task.getDescription().replaceAll(WHITESPACE, UNDERSCORE) + task.getDate() + fileName;
     }
 
     private static List<Task> getTaskList(DBConnector dbConnector, String login, TaskEnum taskEnum) throws SQLException, DaoException {

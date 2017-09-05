@@ -3,14 +3,23 @@ package by.gsu.epamlab.model.beans;
 import java.sql.Date;
 
 public class Task {
+    private int id;
     private String description;
     private  String date;
     private String fileName;
 
     public Task() {
+        id = 0;
         this.description = null;
         this.date = null;
         fileName = null;
+    }
+
+    public Task(int id, String description, String date, String fileName) {
+        this.id = id;
+        this.description = description;
+        this.date = date;
+        this.fileName = fileName;
     }
 
     public Task(String description, String date, String fileName) {

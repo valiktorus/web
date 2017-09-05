@@ -3,8 +3,10 @@ package by.gsu.epamlab.controllers.taskControllers;
 import by.gsu.epamlab.controllers.AbstractController;
 import by.gsu.epamlab.controllers.ControllerConstants;
 import by.gsu.epamlab.exceptions.DaoException;
+import by.gsu.epamlab.interfaces.IDataConverter;
 import by.gsu.epamlab.interfaces.ITaskDAO;
 import by.gsu.epamlab.model.beans.Task;
+import by.gsu.epamlab.model.converter.DataConverter;
 import by.gsu.epamlab.model.factories.DAOFactory;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -22,8 +24,8 @@ public class DeleteTaskController extends AbstractController {
     protected void performTask(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String login = (String)req.getSession().getAttribute(ControllerConstants.KEY_USER);
         String json = req.getReader().readLine();
-        Gson gson = new GsonBuilder().create();
-        Task[] tasksToDelete = gson.fromJson(json, Task[].class);
+        IDataConverter dataConverter = new DataConverter();
+        Task[] tasksToDelete = dataConverter.getTasksFromJson(json);
         try {
             ITaskDAO iTaskDAO = DAOFactory.getDAO(ITaskDAO.class);
             iTaskDAO.deleteTask(login, tasksToDelete);

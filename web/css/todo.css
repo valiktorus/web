@@ -13,7 +13,7 @@
 }
 
 .todo{
-    width: 500px;
+    width: 800px;
     height: 340px;
     margin-top: 10px;
     border: 1px solid #5c9eff;
@@ -38,7 +38,7 @@
     width: inherit;
 }
 .crudTask{
-    width: 500px;
+    width: 800px;
     border: 1px solid #5c9eff;
     border-radius: 5px;
     height: 20px;
@@ -63,4 +63,27 @@
 .todo input{
     margin: 0;
     padding:0;
+}
+table {
+    width:100%;
+    border-bottom: 1px solid #5c9eff;
+}
+td{
+    border: 1px solid #5c9eff;
+}
+
+.fileFormBox{
+    padding:0;
+    margin:0;
+}
+.todo input[type="submit"]{
+    background:#ccdbe6;
+}
+td:last-child{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+input[type="file"]{
+    background:#ccdbe6;
 }

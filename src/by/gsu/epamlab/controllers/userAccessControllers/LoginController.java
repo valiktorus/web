@@ -3,6 +3,7 @@ package by.gsu.epamlab.controllers.userAccessControllers;
 import by.gsu.epamlab.controllers.AbstractController;
 import by.gsu.epamlab.controllers.ControllerConstants;
 import by.gsu.epamlab.exceptions.DaoException;
+import by.gsu.epamlab.exceptions.UserAuthenticationException;
 import by.gsu.epamlab.exceptions.ValidationException;
 import by.gsu.epamlab.interfaces.IUserDAO;
 import by.gsu.epamlab.model.beans.User;
@@ -28,7 +29,7 @@ public class LoginController extends AbstractController {
             HttpSession session = req.getSession();
             session.setAttribute(ControllerConstants.KEY_USER, user.getLogin());
             jump(ControllerConstants.TASK_CONTROLLER, req, resp);
-        }catch (ValidationException | DaoException e){
+        }catch (ValidationException | DaoException | UserAuthenticationException e){
             jumpError(e.getMessage(), ControllerConstants.LOGIN_PAGE, req, resp);
         }
 

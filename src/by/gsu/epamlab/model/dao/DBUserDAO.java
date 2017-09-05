@@ -1,6 +1,7 @@
 package by.gsu.epamlab.model.dao;
 
 import by.gsu.epamlab.exceptions.DaoException;
+import by.gsu.epamlab.exceptions.UserAuthenticationException;
 import by.gsu.epamlab.interfaces.IUserDAO;
 import by.gsu.epamlab.model.beans.User;
 import by.gsu.epamlab.model.connector.DBConnector;
@@ -18,7 +19,7 @@ public class DBUserDAO implements IUserDAO {
     private static final int PASSWORD_INDEX = 2;
 
     @Override
-    public User getUser(String login, String password) throws DaoException {
+    public User getUser(String login, String password) throws DaoException, UserAuthenticationException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -33,7 +34,7 @@ public class DBUserDAO implements IUserDAO {
             if (resultSet.next()){
                 return new User(login, password);
             }else {
-                throw new DaoException(QueryConstants.WRONG_LOGIN_OR_PASSWORD);
+                throw new UserAuthenticationException(QueryConstants.WRONG_LOGIN_OR_PASSWORD);
             }
         } catch (SQLException e) {
             throw new DaoException(QueryConstants.ERROR_IN_QUERY_DURING_LOGIN, e);

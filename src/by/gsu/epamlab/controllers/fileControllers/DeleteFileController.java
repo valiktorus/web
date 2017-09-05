@@ -19,6 +19,7 @@ public class DeleteFileController extends AbstractController {
 
     @Override
     protected void performTask(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
         String login = (String) req.getSession().getAttribute(ControllerConstants.KEY_USER);
         Task task = new Task(req.getParameter("taskDescription"),req.getParameter("taskDate"), req.getParameter("fileName"));
         String realPath = getServletContext().getRealPath("/");

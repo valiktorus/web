@@ -1,4 +1,7 @@
-html{
+@import "todo.css";
+@import "textStyles.css";
+
+body{
     background-color: #ccdbe6;
 }
 #wrapper{

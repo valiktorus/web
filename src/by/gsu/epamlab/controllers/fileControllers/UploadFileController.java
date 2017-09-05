@@ -16,10 +16,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLEncoder;
 import java.nio.file.Paths;
 
 @WebServlet(name = "UploadFileController", urlPatterns = ControllerConstants.UPLOAD_FILE_CONTROLLER)
-@MultipartConfig()
+@MultipartConfig(maxFileSize = 1024*1024*50)
 public class UploadFileController extends AbstractController {
 
     @Override
@@ -31,7 +32,7 @@ public class UploadFileController extends AbstractController {
         String fileName = part.getSubmittedFileName();
         try {
             ITaskDAO iTaskDAO = DAOFactory.getDAO(ITaskDAO.class);
-            iTaskDAO.uploadFile(login, task, realPath, fileName, part.getInputStream());
+            iTaskDAO.uploadFile(login, task, realPath, new String(fileName.getBytes(),"UTF-8"), part.getInputStream());
             redirect(ControllerConstants.TASK_CONTROLLER, resp);
         } catch (DaoException e) {
             jumpError(e.getMessage(), ControllerConstants.ERROR_PAGE, req, resp);
