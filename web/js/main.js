@@ -1,4 +1,3 @@
-
 function getToDo(id) {
     event.preventDefault();
     $('.visible').removeClass('visible');
@@ -29,11 +28,7 @@ function populateData(operation) {
     var result = [];
     $checkboxes.each(function(id, el) {
         var $el = $(el);
-        result.push({
-            description: $el.data('description'),
-            date: $el.data('date'),
-            fileName: $el.data('fileName')
-        });
+        result.push($el.data('id'));
     });
     return JSON.stringify(result);
 }
@@ -44,7 +39,7 @@ function onClickButton(event, url, operation) {
     if (!data) {
         return;
     }
-    if (operation !== null) {
+    if (operation !=='clearAll') {
         data += "\n" + operation;
     }
     $.post(url, data, function(data) {
@@ -66,8 +61,8 @@ function setOnClickButtons() {
     $('#createTaskButton').click(function (event) {
         event.preventDefault();
         var day = $('.todo.visible .todoHeader p').text();
-        $.post(contextPath + "/pages/taskPages/createTask.jsp", function (data) {
-            $('html').html(data);
+        $.post(contextPath + '/pages/taskPages/createTask.jsp', function (data) {
+            $('body').html(data.replace(/.*?<body>(.*?)<\/body>.*/, '$1'));
             var stringDate = getInputDate(day);
             if (stringDate !== null){
                 var inputDate = $('#importDate');
@@ -78,12 +73,11 @@ function setOnClickButtons() {
         })
     });
     $('#clearSelectedTaskButton').click(function (event) {
-        onClickButton(event,contextPath + "/operation/deleteTaskController")
+        onClickButton(event,contextPath + '/operation/deleteTaskController')
     });
     $('#clearAllTaskButton').click(function (event) {
-        onClickButton(event,contextPath +  "/operation/deleteTaskController", 'clearAll')
+        onClickButton(event,contextPath +  '/operation/deleteTaskController', 'clearAll')
     });
-
 }
 
 function getInputDate(day) {
@@ -98,12 +92,13 @@ function getInputDate(day) {
     }
     return stringDate;
 }
+
 function getStringDate(date) {
     return date.toISOString().match(/\d{4}-\d{2}-\d{2}/g)[0];
-    
 }
 
 $(document).ready(function () {
     setOnClickButtons();
+    
 });
 

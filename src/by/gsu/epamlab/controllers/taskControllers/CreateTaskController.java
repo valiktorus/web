@@ -27,7 +27,7 @@ public class CreateTaskController extends AbstractController {
             iTaskDAO.createTask(login, new Task(taskDescription, date));
             redirect(ControllerConstants.TASK_CONTROLLER, resp);
         } catch (DaoException e) {
-            jumpError(e.getMessage(), ControllerConstants.CREATE_TASK_CONTROLLER, req, resp);
+            jumpError(e.getMessage(), ControllerConstants.ERROR_PAGE, req, resp);
         }
     }
 }

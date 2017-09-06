@@ -7,8 +7,8 @@ import com.google.gson.GsonBuilder;
 
 public class DataConverter implements IDataConverter {
     @Override
-    public Task[] getTasksFromJson(String json) {
+    public Integer[] getTasksFromJson(String json) {
         Gson gson = new GsonBuilder().create();
-        return  gson.fromJson(json, Task[].class);
+        return  gson.fromJson(json, Integer[].class);
     }
 }

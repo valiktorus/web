@@ -26,17 +26,16 @@ public class UploadFileController extends AbstractController {
     @Override
     protected void performTask(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String login = (String) req.getSession().getAttribute(ControllerConstants.KEY_USER);
-        Task task = new Task(req.getParameter("taskDescription"), req.getParameter("taskDate"));
+        int idTask = Integer.parseInt(req.getParameter("idTask"));
         Part part = req.getPart("fileUpload");
         String realPath = req.getServletContext().getRealPath("/");
         String fileName = part.getSubmittedFileName();
         try {
             ITaskDAO iTaskDAO = DAOFactory.getDAO(ITaskDAO.class);
-            iTaskDAO.uploadFile(login, task, realPath, new String(fileName.getBytes(),"UTF-8"), part.getInputStream());
+            iTaskDAO.uploadFile(login, idTask, realPath, new String(fileName.getBytes(),"UTF-8"), part.getInputStream());
             redirect(ControllerConstants.TASK_CONTROLLER, resp);
         } catch (DaoException e) {
             jumpError(e.getMessage(), ControllerConstants.ERROR_PAGE, req, resp);
         }
-
     }
 }

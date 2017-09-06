@@ -13,10 +13,10 @@ import java.util.Map;
 
 public interface ITaskDAO {
     Map<TaskEnum, List<Task>> getTaskLists(String login) throws DaoException;
-    void updateTasks(String login, Task[] tasks, ActionEnum action) throws DaoException;
+    void updateTasks(String login, Integer[] idTasks, ActionEnum action) throws DaoException;
     void createTask(String login, Task task) throws DaoException;
-    void deleteTask(String login, Task[] tasks) throws DaoException;
-    void uploadFile(String login, Task task, String realPath, String fileName, InputStream inputStream)throws DaoException;
-    InputStream getFileInputStream(String login, Task task, String realPath) throws DaoException;
-    void deleteFile(String login, Task task, String realPath) throws DaoException;
+    void deleteTask(String login, Integer[] idTasks) throws DaoException;
+    void uploadFile(String login, Integer idTask, String realPath, String fileName, InputStream inputStream)throws DaoException;
+    InputStream getFileInputStream(String login, String fileName, int idTask, String realPath) throws DaoException;
+    void deleteFile(String login, String fileName, int idTask, String realPath) throws DaoException;
 }

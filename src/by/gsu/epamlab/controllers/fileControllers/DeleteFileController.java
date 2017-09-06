@@ -21,11 +21,12 @@ public class DeleteFileController extends AbstractController {
     protected void performTask(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         String login = (String) req.getSession().getAttribute(ControllerConstants.KEY_USER);
-        Task task = new Task(req.getParameter("taskDescription"),req.getParameter("taskDate"), req.getParameter("fileName"));
+        int idTask = Integer.parseInt(req.getParameter(ControllerConstants.KEY_ID_TASK));
+        String fileName = req.getParameter(ControllerConstants.KEY_FILE_NAME);
         String realPath = getServletContext().getRealPath("/");
         try {
             ITaskDAO iTaskDAO = DAOFactory.getDAO(ITaskDAO.class);
-            iTaskDAO.deleteFile(login, task, realPath);
+            iTaskDAO.deleteFile(login, fileName, idTask, realPath);
             redirect(ControllerConstants.TASK_CONTROLLER, resp);
         } catch (DaoException e) {
             jumpError(e.getMessage(), ControllerConstants.ERROR_PAGE, req, resp);

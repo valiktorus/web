@@ -22,15 +22,16 @@ public class DownloadFileController extends AbstractController {
     @Override
     protected void performTask(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String login = (String) req.getSession().getAttribute(ControllerConstants.KEY_USER);
-        Task task = new Task(req.getParameter("taskDescription"), req.getParameter("taskDate"), req.getParameter("fileName"));
+        int idTask = Integer.parseInt(req.getParameter(ControllerConstants.KEY_ID_TASK));
+        String fileName = req.getParameter(ControllerConstants.KEY_FILE_NAME);
         String realPath = req.getServletContext().getRealPath("/");
         resp.setContentType("application/octet-stream");
-        resp.setHeader("Content-Disposition", String.format("attachment; filename=\"%s\"", task.getFileName()));
+        resp.setHeader("Content-Disposition", String.format("attachment; filename=\"%s\"", fileName));
         InputStream inputStream = null;
         OutputStream outputStream = null;
         try {
             ITaskDAO iTaskDAO = DAOFactory.getDAO(ITaskDAO.class);
-            inputStream = iTaskDAO.getFileInputStream(login, task, realPath);
+            inputStream = iTaskDAO.getFileInputStream(login, fileName, idTask, realPath);
             outputStream = resp.getOutputStream();
             int data;
             while ((data = inputStream.read()) != -1){

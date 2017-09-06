@@ -13,6 +13,8 @@ public class ControllerConstants {
     public static final String KEY_PASSWORD = "password";
     public static final String KEY_USER = "user";
     public static final String KEY_PASSWORD_REPEAT = "passwordRepeat";
+    public static final String KEY_ID_TASK = "idTask";
+    public static final String KEY_FILE_NAME = "fileName";
 
     //controllers and filters urls
     public static final String TASK_CONTROLLER = "/operation/taskController";

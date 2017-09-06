@@ -87,3 +87,7 @@ td:last-child{
 input[type="file"]{
     background:#ccdbe6;
 }
+
+.withOutDate .dateLine{
+    display:none;
+}

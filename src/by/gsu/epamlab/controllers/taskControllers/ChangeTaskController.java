@@ -5,7 +5,7 @@ import by.gsu.epamlab.controllers.ControllerConstants;
 import by.gsu.epamlab.exceptions.DaoException;
 import by.gsu.epamlab.interfaces.IDataConverter;
 import by.gsu.epamlab.interfaces.ITaskDAO;
-import by.gsu.epamlab.model.beans.Task;
+
 import by.gsu.epamlab.model.converter.DataConverter;
 import by.gsu.epamlab.model.enums.ActionEnum;
 import by.gsu.epamlab.model.factories.DAOFactory;
@@ -26,11 +26,11 @@ public class ChangeTaskController extends AbstractController {
         String json = reader.readLine();
         ActionEnum action = ActionEnum.valueOf(reader.readLine().toUpperCase());
         IDataConverter dataConverter = new DataConverter();
-        Task[] tasksToChange = dataConverter.getTasksFromJson(json);
+        Integer[] idTasksToChange = dataConverter.getTasksFromJson(json);
         String login = (String) req.getSession().getAttribute(ControllerConstants.KEY_USER);
         try {
             ITaskDAO iTaskDAO = DAOFactory.getDAO(ITaskDAO.class);
-            iTaskDAO.updateTasks(login, tasksToChange, action);
+            iTaskDAO.updateTasks(login, idTasksToChange, action);
             redirect(ControllerConstants.TASK_CONTROLLER, resp);
         } catch (DaoException e) {
             jumpError(e.getMessage(), ControllerConstants.ERROR_PAGE, req, resp);

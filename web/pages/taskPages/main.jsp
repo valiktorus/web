@@ -1,5 +1,3 @@
-<%@ page import="by.gsu.epamlab.controllers.ControllerConstants" %>
-<%@ page import="by.gsu.epamlab.model.beans.Task" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <html lang="en">
@@ -17,87 +15,45 @@
     <div id="bodyContainer">
         <jsp:include page="../fragments/bodyMenuButtons.jsp"/>
         <div id="tasksContainer">
-            <div id="today" class="todo visible">
+            <div id="today" class="todo visible withOutDate">
                 <div class="todoHeader">
                     <p>Today</p>
                 </div>
-                <table>
-                    <c:forEach items="${todayList}" var="task">
-                        <tr>
-                            <td><input type="checkbox" name="taskDescription" data-description="${task.description}" data-date="${task.date}" data-fileName="${task.fileName}"></td>
-                            <td>${task.description}</td>
-                            ${pageContext.request.setAttribute("currentTask", task)}
-                            <jsp:include page="../fragments/fileForms.jsp"/>
-                        </tr>
-                    </c:forEach>
-                </table>
+                ${pageContext.request.setAttribute("currentTaskList", todayList)}
+                <jsp:include page="../fragments/todoList.jsp"/>
             </div>
-            <div id="tomorrow" class="todo">
+            <div id="tomorrow" class="todo withOutDate">
                 <div class="todoHeader">
                     <p>Tomorrow</p>
                 </div>
-                <table>
-                    <c:forEach items="${tomorrowList}" var="task">
-                        <tr>
-                            <td><input type="checkbox" name="taskDescription" data-description="${task.description}" data-date="${task.date}" data-fileName="${task.fileName}"></td>
-                            <td>${task.description}</td>
-                            <jsp:include page="../fragments/fileForms.jsp"/>
-                        </tr>
-                    </c:forEach>
-                </table>
+                ${pageContext.request.setAttribute("currentTaskList", tomorrowList)}
+                <jsp:include page="../fragments/todoList.jsp"/>
             </div>
             <div id="someDay" class="todo">
                 <div class="todoHeader">
                     <p>Some days</p>
                 </div>
-                <form method="post" name="someDayForm">
-                    <table>
-                        <c:forEach items="${otherDayList}" var="task">
-                            <tr>
-                                <td><input type="checkbox" name="taskDescription" data-description="${task.description}" data-date="${task.date}" data-fileName="${task.fileName}"></td>
-                                <td>${task.description}</td>
-                                <td>${task.date}</td>
-                                <jsp:include page="../fragments/fileForms.jsp"/>
-                            </tr>
-                        </c:forEach>
-                    </table>
-                </form>
+                ${pageContext.request.setAttribute("currentTaskList", otherDayList)}
+                <jsp:include page="../fragments/todoList.jsp"/>
             </div>
             <div id="fixed" class="todo">
                 <div class="todoHeader">
                     <p>Fixed</p>
                 </div>
-                <table>
-                    <c:forEach items="${fixedList}" var="task">
-                        <tr>
-                            <td><input type="checkbox" name="taskDescription" data-description="${task.description}" data-date="${task.date}" data-fileName="${task.fileName}"></td>
-                            <td>${task.description}</td>
-                            <td>${task.date}</td>
-                            <jsp:include page="../fragments/fileForms.jsp"/>
-                        </tr>
-                    </c:forEach>
-                </table>
+                ${pageContext.request.setAttribute("currentTaskList", fixedList)}
+                <jsp:include page="../fragments/todoList.jsp"/>
             </div>
             <div id="recycleBin" class="todo">
                 <div class="todoHeader">
                     <p>Recycle bin</p>
                 </div>
-                <table>
-                    <c:forEach items="${deletedList}" var="task">
-                        <tr>
-                            <td><input type="checkbox" name="taskDescription" data-description="${task.description}" data-date="${task.date}" data-fileName="${task.fileName}"></td>
-                            <td>${task.description}</td>
-                            <td>${task.date}</td>
-                            <jsp:include page="../fragments/fileForms.jsp"/>
-                        </tr>
-                    </c:forEach>
-                </table>
+                ${pageContext.request.setAttribute("currentTaskList", deletedList)}
+                <jsp:include page="../fragments/todoList.jsp"/>
             </div>
             <jsp:include page="../fragments/toDoFooter.jsp"/>
         </div>
     </div>
     <jsp:include page="../fragments/footer.jsp"/>
 </div>
-
 </body>
 </html>

@@ -45,11 +45,10 @@ public class DBTaskDAO implements ITaskDAO{
     }
 
     @Override
-    public void updateTasks(String login, Task[] tasks, ActionEnum action) throws DaoException {
+    public void updateTasks(String login, Integer[] idTasks, ActionEnum action) throws DaoException {
         final int ACTION_INDEX = 1;
-        final int LOGIN_INDEX = 2;
-        final int TASK_INDEX = 3;
-        final int DATE_INDEX = 4;
+        final int ID_INDEX = 2;
+        final int LOGIN_INDEX = 3;
         DBConnector dbConnector = null;
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -57,11 +56,10 @@ public class DBTaskDAO implements ITaskDAO{
             dbConnector = new DBConnector();
             connection = dbConnector.getConnection();
             preparedStatement = connection.prepareStatement(QueryConstants.UPDATE_TASK);
-            for (Task task: tasks) {
+            for (Integer idTask: idTasks) {
                 preparedStatement.setString(ACTION_INDEX, action.toString());
+                preparedStatement.setInt(ID_INDEX, idTask);
                 preparedStatement.setString(LOGIN_INDEX, login);
-                preparedStatement.setString(TASK_INDEX, task.getDescription());
-                preparedStatement.setDate(DATE_INDEX, task.getDate());
                 preparedStatement.executeUpdate();
             }
         }catch (SQLException e) {
@@ -79,7 +77,7 @@ public class DBTaskDAO implements ITaskDAO{
         final int SELECT_TASK_ID_INDEX = 1;
         final int INSERT_TASK_ID_INDEX = 2;
         final int TASK_DESCRIPTION_INDEX = 1;
-        final int INSERT_DATE_INDEX = 4;
+        final int INSERT_DATE_INDEX = 3;
         DBConnector dbConnector = new DBConnector();
         Connection connection = null;
         PreparedStatement psSelectTask = null;
@@ -115,20 +113,18 @@ public class DBTaskDAO implements ITaskDAO{
     }
 
     @Override
-    public void deleteTask(String login, Task[] tasks) throws DaoException {
-        final int LOGIN_INDEX = 1;
-        final int TASK_INDEX = 2;
-        final int DATE_INDEX = 3;
+    public void deleteTask(String login, Integer[] idTasks) throws DaoException {
+        final int ID_INDEX = 1;
+        final int LOGIN_INDEX = 2;
         DBConnector dbConnector = new DBConnector();
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try{
             connection = dbConnector.getConnection();
             preparedStatement = connection.prepareStatement(QueryConstants.DELETE_TASK);
-            for (Task task: tasks) {
+            for (Integer idTask: idTasks) {
+                preparedStatement.setInt(ID_INDEX, idTask);
                 preparedStatement.setString(LOGIN_INDEX, login);
-                preparedStatement.setString(TASK_INDEX, task.getDescription());
-                preparedStatement.setDate(DATE_INDEX, task.getDate());
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
@@ -139,14 +135,13 @@ public class DBTaskDAO implements ITaskDAO{
     }
 
     @Override
-    public void uploadFile(String login, Task task, String realPath, String fileName, InputStream inputStream) throws DaoException {
+    public void uploadFile(String login, Integer idTask, String realPath, String fileName, InputStream inputStream) throws DaoException {
         final int FILE_PATH_INDEX = 1;
         final int LOGIN_INDEX = 2;
-        final int TASK_DESCRIPTION_INDEX = 3;
-        final int DATE_INDEX = 4;
+        final int ID_TASK_INDEX = 3;
 
         String dir = realPath + RESOURCES_PATH + login ;
-        String uniqueFileName = generateUniqueFileName(fileName, task);
+        String uniqueFileName = generateUniqueFileName(fileName, idTask);
         String filePath = dir + SEPARATOR + uniqueFileName;
         File userDirectory = new File(dir);
         userDirectory.mkdir();
@@ -167,8 +162,7 @@ public class DBTaskDAO implements ITaskDAO{
             preparedStatement = connection.prepareStatement(QueryConstants.UPLOAD_FILE);
             preparedStatement.setString(FILE_PATH_INDEX, fileName);
             preparedStatement.setString(LOGIN_INDEX, login);
-            preparedStatement.setString(TASK_DESCRIPTION_INDEX, task.getDescription());
-            preparedStatement.setDate(DATE_INDEX, task.getDate());
+            preparedStatement.setInt(ID_TASK_INDEX, idTask);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException(QueryConstants.ERROR_DURING_UPLOADING_FILE, e);
@@ -178,8 +172,8 @@ public class DBTaskDAO implements ITaskDAO{
     }
 
     @Override
-    public InputStream getFileInputStream(String login, Task task, String realPath) throws DaoException {
-        String uniqueFileName = generateUniqueFileName(task.getFileName(), task);
+    public InputStream getFileInputStream(String login, String fileName, int idTask, String realPath) throws DaoException {
+        String uniqueFileName = generateUniqueFileName(fileName, idTask);
         String filePath = realPath + RESOURCES_PATH + login + SEPARATOR + uniqueFileName;
         try {
             return new FileInputStream(new File(filePath));
@@ -189,11 +183,9 @@ public class DBTaskDAO implements ITaskDAO{
     }
 
     @Override
-    public void deleteFile(String login, Task task, String realPath) throws DaoException {
+    public void deleteFile(String login, String fileName, int idTask, String realPath) throws DaoException {
         final int LOGIN_INDEX = 1;
-        final int TASK_DESCRIPTION_INDEX = 2;
-        final int DATE_INDEX = 3;
-        final int FILE_NAME_INDEX = 4;
+        final int ID_TASK_INDEX = 2;
 
         DBConnector dbConnector = new DBConnector();
         Connection connection = null;
@@ -202,17 +194,14 @@ public class DBTaskDAO implements ITaskDAO{
             connection = dbConnector.getConnection();
             preparedStatement = connection.prepareStatement(QueryConstants.DELETE_FILE);
             preparedStatement.setString(LOGIN_INDEX, login);
-            preparedStatement.setString(TASK_DESCRIPTION_INDEX, task.getDescription());
-            preparedStatement.setDate(DATE_INDEX, task.getDate());
-            preparedStatement.setString(FILE_NAME_INDEX, task.getFileName());
+            preparedStatement.setInt(ID_TASK_INDEX, idTask);
             preparedStatement.executeUpdate();
-
         } catch (SQLException e) {
             throw new DaoException(ERROR_DURING_DELETING_FILE_NAME, e);
         }finally {
             dbConnector.closeConnection(connection, preparedStatement);
         }
-        String uniqueFileName = generateUniqueFileName(task.getFileName(), task);
+        String uniqueFileName = generateUniqueFileName(fileName, idTask);
         String filePath = realPath + RESOURCES_PATH + login + SEPARATOR + uniqueFileName;
         File fileToDelete = new File(filePath);
         if (!fileToDelete.delete()){
@@ -220,16 +209,17 @@ public class DBTaskDAO implements ITaskDAO{
         }
     }
 
-    private String generateUniqueFileName(String fileName, Task task){
-        return task.getDescription().replaceAll(WHITESPACE, UNDERSCORE) + task.getDate() + fileName;
+    private String generateUniqueFileName(String fileName, int idTask){
+        return idTask + fileName;
     }
 
     private static List<Task> getTaskList(DBConnector dbConnector, String login, TaskEnum taskEnum) throws SQLException, DaoException {
         final int LOGIN_INDEX = 1;
         final int STATUS_INDEX = 2;
-        final int TASK_DESCRIPTION_INDEX = 1;
-        final int DATE_INDEX = 2;
-        final int FILE_NAME_INDEX = 3;
+        final int ID_INDEX = 1;
+        final int TASK_DESCRIPTION_INDEX = 2;
+        final int DATE_INDEX = 3;
+        final int FILE_NAME_INDEX = 4;
 
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -241,10 +231,11 @@ public class DBTaskDAO implements ITaskDAO{
             preparedStatement.setString(STATUS_INDEX, taskEnum.getStatus());
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
+                int id = resultSet.getInt(ID_INDEX);
                 String taskDescription = resultSet.getString(TASK_DESCRIPTION_INDEX);
                 Date date = resultSet.getDate(DATE_INDEX);
                 String fileName = resultSet.getString(FILE_NAME_INDEX);
-                tasks.add(new Task(taskDescription, date, fileName));
+                tasks.add(new Task(id, taskDescription, date, fileName));
             }
         }finally {
             if (dbConnector != null) {

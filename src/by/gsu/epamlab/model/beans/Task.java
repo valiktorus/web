@@ -3,10 +3,10 @@ package by.gsu.epamlab.model.beans;
 import java.sql.Date;
 
 public class Task {
-    private int id;
-    private String description;
-    private  String date;
-    private String fileName;
+    private final int id;
+    private final String description;
+    private final Date date;
+    private final String fileName;
 
     public Task() {
         id = 0;
@@ -15,51 +15,27 @@ public class Task {
         fileName = null;
     }
 
-    public Task(int id, String description, String date, String fileName) {
+    public Task(int id, String description, Date date, String fileName) {
         this.id = id;
         this.description = description;
         this.date = date;
         this.fileName = fileName;
     }
 
-    public Task(String description, String date, String fileName) {
-        this.description = description;
-        this.date = date;
-        this.fileName = fileName;
-    }
-
-    public Task(String description, Date date, String fileName) {
-        this.description = description;
-        this.date = date.toString();
-        this.fileName = fileName;
-    }
-
-    public Task(String description, Date date) {
-        this.description = description;
-        this.date = date.toString();
-        this.fileName = null;
+    public Task(int id, String description, String date, String fileName) {
+        this(id, description, Date.valueOf(date), fileName);
     }
 
     public Task(String description, String date) {
-        this.description = description;
-        this.date = date;
-        this.fileName = null;
+        this(description, Date.valueOf(date));
     }
 
-    public String getFileName() {
-        return fileName;
+    public Task(String description, Date date) {
+        this(0, description, date, null);
     }
 
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
+    public int getId() {
+        return id;
     }
 
     public String getDescription() {
@@ -67,7 +43,11 @@ public class Task {
     }
 
     public Date getDate() {
-        return Date.valueOf(date);
+        return date;
+    }
+
+    public String getFileName() {
+        return fileName;
     }
 
     @Override

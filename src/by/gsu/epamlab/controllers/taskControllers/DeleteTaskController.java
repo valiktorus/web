@@ -15,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.IOException;
 
 @WebServlet(name = "DeleteTaskController", urlPatterns = ControllerConstants.DELETE_TASK_CONTROLLER)
@@ -23,12 +24,13 @@ public class DeleteTaskController extends AbstractController {
     @Override
     protected void performTask(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String login = (String)req.getSession().getAttribute(ControllerConstants.KEY_USER);
-        String json = req.getReader().readLine();
+        BufferedReader reader = req.getReader();
+        String json = reader.readLine();
         IDataConverter dataConverter = new DataConverter();
-        Task[] tasksToDelete = dataConverter.getTasksFromJson(json);
+        Integer[] idTasksToDelete = dataConverter.getTasksFromJson(json);
         try {
             ITaskDAO iTaskDAO = DAOFactory.getDAO(ITaskDAO.class);
-            iTaskDAO.deleteTask(login, tasksToDelete);
+            iTaskDAO.deleteTask(login, idTasksToDelete);
             redirect(ControllerConstants.TASK_CONTROLLER, resp);
         } catch (DaoException e) {
             jumpError(e.getMessage(), ControllerConstants.DELETE_TASK_CONTROLLER, req, resp);

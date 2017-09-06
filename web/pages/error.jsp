@@ -13,7 +13,7 @@
             <h2 class="errorMessage"><c:out value="${errorMessage}"/></h2>
         </c:when>
         <c:when test="${not empty pageContext.errorData.requestURI}">
-            <h2>Page requested ${pageContext.errorData.requestURI} Not found on the server</h2>
+            <h2>Page requested ${pageContext.errorData.requestURI}</h2>
         </c:when>
         <c:otherwise>
             Unexpected application error

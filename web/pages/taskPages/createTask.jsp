@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <jsp:include page="../fragments/styles.jsp"/>
+    <script> var contextPath = "${pageContext.request.contextPath}"</script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/main.js"></script>
 </head>
