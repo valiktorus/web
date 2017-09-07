@@ -1,7 +1,6 @@
 package by.gsu.epamlab.model.converter;
 
 import by.gsu.epamlab.interfaces.IDataConverter;
-import by.gsu.epamlab.model.beans.Task;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 

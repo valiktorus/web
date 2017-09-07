@@ -19,11 +19,9 @@ public class DBTaskDAO implements ITaskDAO{
 
     private static final String RESOURCES_PATH = "WEB-INF\\resources\\";
     private static final String SEPARATOR = "\\";
-    public static final String FILE_NOT_FOUND = "file not found";
-    public static final String ERROR_DURING_DELETING_FILE_NAME = "Error during deleting file name";
-    public static final String ERROR_DURING_DELETING_FILE = "Error during deleting file";
-    public static final String WHITESPACE = " ";
-    public static final String UNDERSCORE = "_";
+    private static final String FILE_NOT_FOUND = "file not found";
+    private static final String ERROR_DURING_DELETING_FILE_NAME = "Error during deleting file name";
+    private static final String ERROR_DURING_DELETING_FILE = "Error during deleting file";
 
     @Override
     public Map<TaskEnum, List<Task>> getTaskLists(String login) throws DaoException {
@@ -102,7 +100,6 @@ public class DBTaskDAO implements ITaskDAO{
             psInsertUserTask.setInt(INSERT_TASK_ID_INDEX, taskId);
             psInsertUserTask.setDate(INSERT_DATE_INDEX, task.getDate());
             psInsertUserTask.executeUpdate();
-
         } catch (SQLException e) {
             throw new DaoException(QueryConstants.ERROR_IN_QUERY_DURING_CREATING_TASK, e);
         }finally {

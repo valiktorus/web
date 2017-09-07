@@ -5,11 +5,8 @@ import by.gsu.epamlab.controllers.ControllerConstants;
 import by.gsu.epamlab.exceptions.DaoException;
 import by.gsu.epamlab.interfaces.IDataConverter;
 import by.gsu.epamlab.interfaces.ITaskDAO;
-import by.gsu.epamlab.model.beans.Task;
 import by.gsu.epamlab.model.converter.DataConverter;
 import by.gsu.epamlab.model.factories.DAOFactory;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -31,10 +28,9 @@ public class DeleteTaskController extends AbstractController {
         try {
             ITaskDAO iTaskDAO = DAOFactory.getDAO(ITaskDAO.class);
             iTaskDAO.deleteTask(login, idTasksToDelete);
-            redirect(ControllerConstants.TASK_CONTROLLER, resp);
+            redirect(req.getContextPath() + ControllerConstants.TASK_CONTROLLER, resp);
         } catch (DaoException e) {
-            jumpError(e.getMessage(), ControllerConstants.DELETE_TASK_CONTROLLER, req, resp);
+            jumpError(e.getMessage(), ControllerConstants.ERROR_PAGE, req, resp);
         }
-
     }
 }

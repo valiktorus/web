@@ -15,6 +15,9 @@ public class ControllerConstants {
     public static final String KEY_PASSWORD_REPEAT = "passwordRepeat";
     public static final String KEY_ID_TASK = "idTask";
     public static final String KEY_FILE_NAME = "fileName";
+    public static final String KEY_FILE_UPLOAD = "fileUpload";
+    public static final String KEY_TASK_DESCRIPTION = "taskDescription";
+    public static final String KEY_DATE = "date";
 
     //controllers and filters urls
     public static final String TASK_CONTROLLER = "/operation/taskController";
@@ -43,5 +46,10 @@ public class ControllerConstants {
     public static final String DELETED_LIST = "deletedList";
     public static final String ACTUAL = "actual";
 
-
+    public static final String CHARACTER_ENCODING = "UTF-8";
+    public static final String SLASH = "/";
+    public static final String CONTENT_TYPE_APPLICATION_OCTET_STREAM = "application/octet-stream";
+    public static final String CONTENT_DISPOSITION_HEADER = "Content-Disposition";
+    public static final String CONTENT_DISPOSITION_VALUE_FORMAT = "attachment; filename=\"%s\"";
+    public static final int MAX_FILE_SIZE = 1024 * 1024 * 100;
 }

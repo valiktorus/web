@@ -21,7 +21,7 @@ public class LoginFilter implements Filter {
         if (login == null){
             session.invalidate();
             HttpServletResponse response = (HttpServletResponse) resp;
-            response.sendRedirect(ControllerConstants.INDEX_PAGE);
+            response.sendRedirect(request.getContextPath() + ControllerConstants.INDEX_PAGE);
             return;
         }
         chain.doFilter(req, resp);

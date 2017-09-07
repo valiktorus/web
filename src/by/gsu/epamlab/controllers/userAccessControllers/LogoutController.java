@@ -12,10 +12,11 @@ import java.io.IOException;
 
 @WebServlet(name = "LogoutController", urlPatterns = ControllerConstants.LOGOUT_CONTROLLER)
 public class LogoutController extends AbstractController {
+
     @Override
     protected void performTask(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
         session.invalidate();
-        redirect(ControllerConstants.INDEX_PAGE, resp);
+        redirect(req.getContextPath() + ControllerConstants.INDEX_PAGE, resp);
     }
 }

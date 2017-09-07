@@ -22,6 +22,7 @@ public class ChangeTaskController extends AbstractController {
 
     @Override
     protected void performTask(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String contextPath = req.getContextPath();
         BufferedReader reader = req.getReader();
         String json = reader.readLine();
         ActionEnum action = ActionEnum.valueOf(reader.readLine().toUpperCase());
@@ -31,7 +32,7 @@ public class ChangeTaskController extends AbstractController {
         try {
             ITaskDAO iTaskDAO = DAOFactory.getDAO(ITaskDAO.class);
             iTaskDAO.updateTasks(login, idTasksToChange, action);
-            redirect(ControllerConstants.TASK_CONTROLLER, resp);
+            redirect(contextPath + ControllerConstants.TASK_CONTROLLER, resp);
         } catch (DaoException e) {
             jumpError(e.getMessage(), ControllerConstants.ERROR_PAGE, req, resp);
         }

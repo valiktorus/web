@@ -45,7 +45,4 @@ public class QueryConstants {
     public static final String ERROR_IN_QUERY_DURING_DELETING_TASKS = "Error in query during deleting tasks";
     public static final String ERROR_IN_QUERY_DURING_CREATING_TASK = "Error in query during creating tasks";
     public static final String ERROR_DURING_UPLOADING_FILE = "Error during uploading file";
-    public static final String ERROR_CONNECTING_TO_DB = "Error connecting to db";
-
-
 }

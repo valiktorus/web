@@ -17,6 +17,7 @@ import java.io.IOException;
 
 @WebServlet(name = "RegistrationController", urlPatterns = ControllerConstants.REGISTRATION_CONTROLLER)
 public class RegistrationController extends AbstractController {
+
     @Override
     protected void performTask(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try{
@@ -28,10 +29,9 @@ public class RegistrationController extends AbstractController {
             User user = userDAO.registerUser(login.trim(), password);
             HttpSession session = req.getSession();
             session.setAttribute(ControllerConstants.KEY_USER, user.getLogin());
-            redirect(ControllerConstants.TASK_CONTROLLER, resp);
+            redirect(req.getContextPath() + ControllerConstants.TASK_CONTROLLER, resp);
         }catch (ValidationException | DaoException e){
             jumpError(e.getMessage(), ControllerConstants.REGISTRATION_PAGE, req, resp);
         }
-
     }
 }

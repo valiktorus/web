@@ -3,11 +3,11 @@ package by.gsu.epamlab.model.enums;
 import by.gsu.epamlab.model.constants.QueryConstants;
 
 public enum TaskEnum {
-    TODAY("actual", "and date <= current_date()"),
-    TOMORROW("actual", "and date = current_date() + interval 1 day"),
-    OTHER("actual", "and date > current_date() + interval 1 day"),
-    FIXED("fixed", ""),
-    DELETED("deleted", "");
+    TODAY(ActionEnum.ACTUAL.toString(), "and date <= current_date()"),
+    TOMORROW(ActionEnum.ACTUAL.toString(), "and date = current_date() + interval 1 day"),
+    OTHER(ActionEnum.ACTUAL.toString(), "and date > current_date() + interval 1 day"),
+    FIXED(ActionEnum.FIXED.toString(), ""),
+    DELETED(ActionEnum.DELETED.toString(), "");
     private String status;
     private String sqlDateQuery;
 

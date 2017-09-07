@@ -18,6 +18,7 @@ import java.io.IOException;
 
 @WebServlet(name = "LoginController", urlPatterns = ControllerConstants.LOGIN_CONTROLLER)
 public class LoginController extends AbstractController {
+
     @Override
     protected void performTask(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try{
@@ -32,6 +33,5 @@ public class LoginController extends AbstractController {
         }catch (ValidationException | DaoException | UserAuthenticationException e){
             jumpError(e.getMessage(), ControllerConstants.LOGIN_PAGE, req, resp);
         }
-
     }
 }

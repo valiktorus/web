@@ -20,12 +20,12 @@ public class CreateTaskController extends AbstractController {
     @Override
     protected void performTask(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String login = (String) req.getSession().getAttribute(ControllerConstants.KEY_USER);
-        String taskDescription = req.getParameter("taskDescription");
-        Date date = Date.valueOf(req.getParameter("date"));
+        String taskDescription = req.getParameter(ControllerConstants.KEY_TASK_DESCRIPTION);
+        Date date = Date.valueOf(req.getParameter(ControllerConstants.KEY_DATE));
         try {
             ITaskDAO iTaskDAO = DAOFactory.getDAO(ITaskDAO.class);
             iTaskDAO.createTask(login, new Task(taskDescription, date));
-            redirect(ControllerConstants.TASK_CONTROLLER, resp);
+            redirect(req.getContextPath() + ControllerConstants.TASK_CONTROLLER, resp);
         } catch (DaoException e) {
             jumpError(e.getMessage(), ControllerConstants.ERROR_PAGE, req, resp);
         }

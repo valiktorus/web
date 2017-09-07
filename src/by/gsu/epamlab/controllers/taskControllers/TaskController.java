@@ -21,7 +21,7 @@ public class TaskController extends AbstractController {
 
     @Override
     protected void performTask(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
+        req.setCharacterEncoding(ControllerConstants.CHARACTER_ENCODING);
         String login = (String) req.getSession().getAttribute(ControllerConstants.KEY_USER);
         try{
             ITaskDAO userDAO = DAOFactory.getDAO(ITaskDAO.class);
@@ -40,6 +40,5 @@ public class TaskController extends AbstractController {
         }catch (DaoException e){
             jumpError(e.getMessage(), ControllerConstants.ERROR_PAGE, req, resp);
         }
-
     }
 }
