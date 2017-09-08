@@ -19,6 +19,7 @@ public class CreateTaskController extends AbstractController {
 
     @Override
     protected void performTask(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding(ControllerConstants.CHARACTER_ENCODING);
         String login = (String) req.getSession().getAttribute(ControllerConstants.KEY_USER);
         String taskDescription = req.getParameter(ControllerConstants.KEY_TASK_DESCRIPTION);
         Date date = Date.valueOf(req.getParameter(ControllerConstants.KEY_DATE));

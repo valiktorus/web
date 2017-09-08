@@ -18,18 +18,17 @@ import java.io.IOException;
 @MultipartConfig(maxFileSize = ControllerConstants.MAX_FILE_SIZE)
 public class UploadFileController extends AbstractController {
 
-
-
     @Override
     protected void performTask(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding(ControllerConstants.CHARACTER_ENCODING);
         String login = (String) req.getSession().getAttribute(ControllerConstants.KEY_USER);
         int idTask = Integer.parseInt(req.getParameter(ControllerConstants.KEY_ID_TASK));
         Part part = req.getPart(ControllerConstants.KEY_FILE_UPLOAD);
-        String realPath = req.getServletContext().getRealPath("/");
+        String realPath = req.getServletContext().getRealPath(ControllerConstants.SLASH);
         String fileName = part.getSubmittedFileName();
         try {
             ITaskDAO iTaskDAO = DAOFactory.getDAO(ITaskDAO.class);
-            iTaskDAO.uploadFile(login, idTask, realPath, new String(fileName.getBytes(),"UTF-8"), part.getInputStream());
+            iTaskDAO.uploadFile(login, idTask, realPath, fileName, part.getInputStream());
             redirect(req.getContextPath() + ControllerConstants.TASK_CONTROLLER, resp);
         } catch (DaoException e) {
             jumpError(e.getMessage(), ControllerConstants.ERROR_PAGE, req, resp);
