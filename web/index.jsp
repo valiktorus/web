@@ -3,14 +3,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Title</title>
+  <title>ToDo</title>
   <jsp:include page="pages/fragments/styles.jsp"/>
 </head>
 <body>
 <div id="wrapper">
   <jsp:include page="pages/fragments/header.jsp"/>
   <div id="bodyContainer">
-    Please LogIn or register
+    Please Login or register
   </div>
   <jsp:include page="pages/fragments/footer.jsp"/>
 </div>

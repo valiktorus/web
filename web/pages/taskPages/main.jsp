@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>ToDo</title>
     <jsp:include page="../fragments/styles.jsp"/>
     <script> var contextPath = "${pageContext.request.contextPath}"</script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.js"></script>
