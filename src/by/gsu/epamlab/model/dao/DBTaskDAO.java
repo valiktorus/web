@@ -22,6 +22,8 @@ public class DBTaskDAO implements ITaskDAO{
     private static final String FILE_NOT_FOUND = "file not found";
     private static final String ERROR_DURING_DELETING_FILE_NAME = "Error during deleting file name";
     private static final String ERROR_DURING_DELETING_FILE = "Error during deleting file";
+    private static final String WHITESPACE = " ";
+    private static final String UNDERLINE = "_";
 
     @Override
     public Map<TaskEnum, List<Task>> getTaskLists(String login) throws DaoException {
@@ -207,7 +209,7 @@ public class DBTaskDAO implements ITaskDAO{
     }
 
     private String generateUniqueFileName(String fileName, int idTask){
-        return idTask + fileName;
+        return idTask + fileName.replaceAll(WHITESPACE, UNDERLINE);
     }
 
     private static List<Task> getTaskList(DBConnector dbConnector, String login, TaskEnum taskEnum) throws SQLException, DaoException {

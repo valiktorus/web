@@ -4,11 +4,11 @@
 <head>
   <meta charset="UTF-8">
   <title>ToDo</title>
-  <jsp:include page="pages/fragments/styles.jsp"/>
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css">
 </head>
 <body>
 <div id="wrapper">
-  <jsp:include page="pages/fragments/header.jsp"/>
+  <c:import url="/pages/fragments/header.jsp"/>
   <div id="bodyContainer">
     Please Login or register
   </div>

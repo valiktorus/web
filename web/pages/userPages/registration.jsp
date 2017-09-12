@@ -5,14 +5,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Registration</title>
-    <jsp:include page="../fragments/styles.jsp"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css">
     <script> var contextPath = "${pageContext.request.contextPath}"</script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/main.js"></script>
 </head>
 <body>
 <div id="wrapper">
-    <jsp:include page="../fragments/header.jsp"/>
+    <c:import url="/pages/fragments/header.jsp"/>
     <div id="bodyContainer">
         <c:if test="${not empty errorMessage}">
             <p class="errorMessage"><c:out value="${errorMessage}"/></p>
