@@ -146,9 +146,9 @@ public class DBTaskDAO implements ITaskDAO{
         userDirectory.mkdir();
         try(BufferedInputStream bis = new BufferedInputStream(inputStream);
             BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(new File(filePath)))) {
-            int data;
-            while ((data = bis.read()) !=-1){
-                bos.write(data);
+            int bytes;
+            while ((bytes = bis.read()) !=-1){
+                bos.write(bytes);
             }
         } catch (IOException e) {
             throw new DaoException(QueryConstants.ERROR_DURING_UPLOADING_FILE, e);

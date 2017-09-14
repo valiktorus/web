@@ -1,6 +1,6 @@
 package by.gsu.epamlab.controllers.userAccessControllers;
 
-import by.gsu.epamlab.controllers.AbstractController;
+import by.gsu.epamlab.controllers.AbstractPostController;
 import by.gsu.epamlab.controllers.ControllerConstants;
 import by.gsu.epamlab.exceptions.DaoException;
 import by.gsu.epamlab.exceptions.UserAuthenticationException;
@@ -17,7 +17,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet(name = "LoginController", urlPatterns = ControllerConstants.LOGIN_CONTROLLER)
-public class LoginController extends AbstractController {
+public class LoginController extends AbstractPostController {
 
     @Override
     protected void performTask(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

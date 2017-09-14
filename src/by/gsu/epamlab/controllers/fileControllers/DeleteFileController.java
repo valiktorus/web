@@ -1,6 +1,6 @@
 package by.gsu.epamlab.controllers.fileControllers;
 
-import by.gsu.epamlab.controllers.AbstractController;
+import by.gsu.epamlab.controllers.AbstractPostController;
 import by.gsu.epamlab.controllers.ControllerConstants;
 import by.gsu.epamlab.exceptions.DaoException;
 import by.gsu.epamlab.interfaces.ITaskDAO;
@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet(name = "DeleteFileController", urlPatterns = ControllerConstants.DELETE_FILE_CONTROLLER)
-public class DeleteFileController extends AbstractController {
+public class DeleteFileController extends AbstractPostController {
 
     @Override
     protected void performTask(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

@@ -1,6 +1,6 @@
 package by.gsu.epamlab.controllers.taskControllers;
 
-import by.gsu.epamlab.controllers.AbstractController;
+import by.gsu.epamlab.controllers.AbstractPostController;
 import by.gsu.epamlab.controllers.ControllerConstants;
 import by.gsu.epamlab.exceptions.DaoException;
 import by.gsu.epamlab.interfaces.ITaskDAO;
@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.sql.Date;
 
 @WebServlet(name = "CreateTaskController", urlPatterns = ControllerConstants.CREATE_TASK_CONTROLLER)
-public class CreateTaskController extends AbstractController {
+public class CreateTaskController extends AbstractPostController {
 
     @Override
     protected void performTask(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

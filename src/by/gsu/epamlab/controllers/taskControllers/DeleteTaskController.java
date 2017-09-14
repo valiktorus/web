@@ -1,6 +1,6 @@
 package by.gsu.epamlab.controllers.taskControllers;
 
-import by.gsu.epamlab.controllers.AbstractController;
+import by.gsu.epamlab.controllers.AbstractPostController;
 import by.gsu.epamlab.controllers.ControllerConstants;
 import by.gsu.epamlab.exceptions.DaoException;
 import by.gsu.epamlab.interfaces.IDataConverter;
@@ -16,7 +16,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 @WebServlet(name = "DeleteTaskController", urlPatterns = ControllerConstants.DELETE_TASK_CONTROLLER)
-public class DeleteTaskController extends AbstractController {
+public class DeleteTaskController extends AbstractPostController {
 
     @Override
     protected void performTask(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

@@ -47,7 +47,7 @@
     text-align:center;
 }
 .crudTaskButton{
-    width: 100px;
+    width: 120px;
     border-left: 1px solid #5c9eff;
     border-right: 1px solid #5c9eff;
     border-radius:inherit;
@@ -57,7 +57,7 @@
     text-align: left;
 }
 .visible{
-    display: inline;
+    display: block;
 }
 .todo input{
     margin: 0;

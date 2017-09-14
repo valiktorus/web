@@ -1,6 +1,6 @@
 package by.gsu.epamlab.controllers.fileControllers;
 
-import by.gsu.epamlab.controllers.AbstractController;
+import by.gsu.epamlab.controllers.AbstractPostController;
 import by.gsu.epamlab.controllers.ControllerConstants;
 import by.gsu.epamlab.exceptions.DaoException;
 import by.gsu.epamlab.interfaces.ITaskDAO;
@@ -16,7 +16,7 @@ import java.io.IOException;
 
 @WebServlet(name = "UploadFileController", urlPatterns = ControllerConstants.UPLOAD_FILE_CONTROLLER)
 @MultipartConfig(maxFileSize = ControllerConstants.MAX_FILE_SIZE)
-public class UploadFileController extends AbstractController {
+public class UploadFileController extends AbstractPostController {
 
     @Override
     protected void performTask(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

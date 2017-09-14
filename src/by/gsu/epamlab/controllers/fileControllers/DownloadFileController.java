@@ -10,9 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 
 @WebServlet(name = "DownloadFileController", urlPatterns = ControllerConstants.DOWNLOAD_FILE_CONTROLLER)
 public class DownloadFileController extends AbstractController {
@@ -25,24 +23,24 @@ public class DownloadFileController extends AbstractController {
         String realPath = req.getServletContext().getRealPath(ControllerConstants.SLASH);
         resp.setContentType(ControllerConstants.CONTENT_TYPE_APPLICATION_OCTET_STREAM);
         resp.setHeader(ControllerConstants.CONTENT_DISPOSITION_HEADER, String.format(ControllerConstants.CONTENT_DISPOSITION_VALUE_FORMAT, fileName));
-        InputStream inputStream = null;
-        OutputStream outputStream = null;
+        BufferedInputStream bis = null;
+        BufferedOutputStream bos = null;
         try {
             ITaskDAO iTaskDAO = DAOFactory.getDAO(ITaskDAO.class);
-            inputStream = iTaskDAO.getFileInputStream(login, fileName, idTask, realPath);
-            outputStream = resp.getOutputStream();
-            int data;
-            while ((data = inputStream.read()) != -1){
-                outputStream.write(data);
+            bis = new BufferedInputStream(iTaskDAO.getFileInputStream(login, fileName, idTask, realPath));
+            bos = new BufferedOutputStream(resp.getOutputStream());
+            int bytes;
+            while ((bytes = bis.read()) !=-1){
+                bos.write(bytes);
             }
         } catch (DaoException e) {
             jumpError(e.getMessage(), ControllerConstants.ERROR_PAGE, req, resp);
         }finally {
-            if (inputStream != null){
-                inputStream.close();
+            if (bis != null){
+                bis.close();
             }
-            if (outputStream != null){
-                outputStream.close();
+            if (bos != null){
+                bos.close();
             }
         }
     }
