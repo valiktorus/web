@@ -22,7 +22,7 @@
             <input type="submit" value="Submit" class="formInput">
         </form>
     </div>
-    <jsp:include page="../fragments/footer.jsp"/>
+    <c:import url="/pages/fragments/footer.jsp"/>
 </div>
 
 </body>

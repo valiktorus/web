@@ -54,7 +54,7 @@
             <c:import url="/pages/fragments/toDoFooter.jsp"/>
         </div>
     </div>
-    <jsp:include page="../fragments/footer.jsp"/>
+    <c:import url="/pages/fragments/footer.jsp"/>
 </div>
 </body>
 </html>
