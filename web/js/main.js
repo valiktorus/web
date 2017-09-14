@@ -16,19 +16,19 @@ function getToDo(id) {
 }
 
 function populateData(operation) {
-    var $checkboxes;
+    var checkboxes;
     if (operation === 'clearAll') {
-        $checkboxes = $('.todo.visible :checkbox');
+        checkboxes = $('.todo.visible :checkbox');
     } else {
-        $checkboxes = $('.todo.visible :checkbox:checked');
+        checkboxes = $('.todo.visible :checkbox:checked');
     }
-    if (!$checkboxes.length) {
+    if (!checkboxes.length) {
         return;
     }
     var result = [];
-    $checkboxes.each(function(id, el) {
-        var $el = $(el);
-        result.push($el.data('id'));
+    checkboxes.each(function(id, el) {
+        var el = $(el);
+        result.push(el.data('id'));
     });
     return JSON.stringify(result);
 }
